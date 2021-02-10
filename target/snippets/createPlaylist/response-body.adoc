@@ -1,4 +1,4 @@
 [source,options="nowrap"]
 ----
-{"name":"Classic","message":"UnSuccessful","songs":[]}
+{"name":"Classic","message":"Successful","songs":[]}
 ----

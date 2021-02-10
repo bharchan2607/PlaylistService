@@ -14,6 +14,9 @@ public class PlaylistEntity {
     private Long id;
     private String name;
 
+    public PlaylistEntity() {
+    }
+
     public PlaylistEntity(String name) {
         this.name = name;
     }

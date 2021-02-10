@@ -12,20 +12,17 @@ public class PlaylistService {
     }
 
     public Playlist createPlaylist(Playlist playlist) {
-        PlaylistEntity entity1 = repository.findByName(playlist.getName());
-        if(entity1 != null) {
-            PlaylistEntity entity = repository.save(new PlaylistEntity(playlist.getName()));
-            Playlist play = null;
-            if (entity != null) {
-                play = mapToPlaylist(entity);
-                play.setMessage("Successful");
-                return play;
-            }
+        if(playlist.getName() == null || (playlist.getName() != null && playlist.getName().isBlank()) ){
+            throw new PlaylistNameRequiredException("Name is Required!!");
         }
-        return new Playlist(playlist.getName(),"UnSuccessful");
+        PlaylistEntity entity1 = repository.findByName(playlist.getName());
+        if(entity1 != null){
+            throw new NameAlreadyExistsException("Name Already Exists!!");
+        }
+        return mapToPlaylist(repository.save(new PlaylistEntity(playlist.getName())));
     }
 
     private Playlist mapToPlaylist(PlaylistEntity entity) {
-        return new Playlist(entity.getName());
+        return new Playlist(entity.getName(), "Successful");
     }
 }
