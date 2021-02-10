@@ -29,4 +29,16 @@ public class PlaylistServiceTest {
         assertEquals(playlist.getMessage(),actualPlaylist.getMessage());
 
     }
+
+    @Test
+    public void createPlaylist_ExistingName(){
+        PlaylistEntity entity = new PlaylistEntity("classic");
+        Playlist playlist = new Playlist("classic","UnSuccessful");
+        when(repository.findByName("classic")).thenReturn(entity);
+        Playlist actualPlaylist = service.createPlaylist(playlist);
+        verify(repository,times(1)).findByName("classic");
+        assertEquals(playlist.getName(),actualPlaylist.getName());
+        assertEquals(playlist.getMessage(),actualPlaylist.getMessage());
+
+    }
 }

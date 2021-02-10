@@ -12,12 +12,15 @@ public class PlaylistService {
     }
 
     public Playlist createPlaylist(Playlist playlist) {
-        PlaylistEntity entity = repository.save(new PlaylistEntity(playlist.getName()));
-        Playlist play = null;
-        if(entity != null) {
-            play = mapToPlaylist(entity);
-            play.setMessage("Successful");
-            return play;
+        PlaylistEntity entity1 = repository.findByName(playlist.getName());
+        if(entity1 != null) {
+            PlaylistEntity entity = repository.save(new PlaylistEntity(playlist.getName()));
+            Playlist play = null;
+            if (entity != null) {
+                play = mapToPlaylist(entity);
+                play.setMessage("Successful");
+                return play;
+            }
         }
         return new Playlist(playlist.getName(),"UnSuccessful");
     }
