@@ -1,0 +1,5 @@
+[source,bash]
+----
+$ echo '{"name":"Kuch Kuch Hota Hai"}' | http POST 'http://localhost:8080/addSong/Classic' \
+    'Content-Type:application/json;charset=UTF-8'
+----

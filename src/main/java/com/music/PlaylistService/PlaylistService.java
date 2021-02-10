@@ -2,6 +2,9 @@ package com.music.PlaylistService;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PlaylistService {
 
@@ -23,6 +26,19 @@ public class PlaylistService {
     }
 
     private Playlist mapToPlaylist(PlaylistEntity entity) {
-        return new Playlist(entity.getName(), "Successful");
+        List<Song> songs = entity.getSongs().stream()
+                .map(songEntity -> new Song(songEntity.getName()))
+                .collect(Collectors.toList());
+        return new Playlist(entity.getName(), "Successful", songs);
+    }
+
+    public Playlist addSongToPlaylist(String playlistName, Song song) {
+        PlaylistEntity entity = repository.findByName(playlistName);
+        if(entity !=null){
+            entity.getSongs().add(new SongEntity(song.getName()));
+            return mapToPlaylist(repository.save(entity));
+        }else{
+            throw new PlaylistNotFoundException("Playlist Not Found!!");
+        }
     }
 }

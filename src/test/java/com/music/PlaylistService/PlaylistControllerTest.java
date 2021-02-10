@@ -14,8 +14,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -85,6 +88,35 @@ class PlaylistControllerTest {
                         instanceof PlaylistNameRequiredException))
                 .andExpect(result -> assertEquals("Name is Required!!",
                         result.getResolvedException().getMessage()));
+
+    }
+
+    @Test
+    public void AddSongToPlaylist() throws Exception {
+        Song song = new Song("Kuch Kuch Hota Hai");
+        Playlist playlist = new Playlist("Classic");
+
+        mockMvc.perform(post("/createPlaylist")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(playlist)))
+                .andExpect(status().isCreated());
+
+        String playlistName = "Classic";
+        mockMvc.perform(post("/addSong/{playlistName}",playlistName)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(song)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(playlistName))
+                .andExpect(jsonPath("$.songs.[0].name").value("Kuch Kuch Hota Hai"))
+                .andDo(document("Add Song",
+                        pathParameters(
+                                parameterWithName("playlistName").description("Playlist Name")),
+                        responseFields(
+                                fieldWithPath("name").description("Playlist Name"),
+                                fieldWithPath("message").description("Success if the playlist is created"),
+                                fieldWithPath("songs").description("Songs in the Playlist"),
+                                fieldWithPath("songs.[].name").description("Name of the Song in the Playlist"))
+                        ));
 
     }
 

@@ -1,0 +1,8 @@
+.+/addSong/{playlistName}+
+|===
+|Parameter|Description
+
+|`+playlistName+`
+|Playlist Name
+
+|===

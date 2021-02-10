@@ -1,10 +1,7 @@
 package com.music.PlaylistService;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class PlaylistController {
@@ -19,5 +16,10 @@ public class PlaylistController {
     @ResponseStatus(HttpStatus.CREATED)
     public Playlist createPlaylist(@RequestBody Playlist playlist){
         return service.createPlaylist(playlist);
+    }
+
+    @PostMapping("/addSong/{playlistName}")
+    public Playlist addSongsToPlaylist(@PathVariable String playlistName, @RequestBody Song song){
+        return service.addSongToPlaylist(playlistName, song);
     }
 }

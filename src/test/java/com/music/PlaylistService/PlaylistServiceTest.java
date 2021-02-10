@@ -8,6 +8,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.Entity;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -57,6 +59,23 @@ public class PlaylistServiceTest {
         Playlist playlist = new Playlist("");
         PlaylistNameRequiredException exception = assertThrows(PlaylistNameRequiredException.class, ()-> service.createPlaylist(playlist));
         assertEquals("Name is Required!!",exception.getMessage());
+
+    }
+
+    @Test
+    public void addSongToPlaylist(){
+        Song song = new Song("Kuch Kuch Hota Hai");
+        PlaylistEntity entity = new PlaylistEntity("Classic");
+        PlaylistEntity entity1 = new PlaylistEntity("Classic", new SongEntity("Kuch Kuch Hota Hai"));
+        Playlist playlist = new Playlist("Classic", song);
+        when(repository.findByName("Classic")).thenReturn(entity);
+        when(repository.save(entity)).thenReturn(entity1);
+        Playlist actualPlaylist = service.addSongToPlaylist("Classic", new Song("Kuch Kuch Hota Hai"));
+        verify(repository, times(1)).findByName("Classic");
+        verify(repository,times(1)).save(entity);
+        assertEquals(playlist.getSongs().size(), actualPlaylist.getSongs().size());
+        assertEquals(playlist.getSongs().get(0).getName(), actualPlaylist.getSongs().get(0).getName());
+
 
     }
 }
