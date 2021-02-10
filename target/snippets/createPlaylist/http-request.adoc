@@ -1,0 +1,9 @@
+[source,http,options="nowrap"]
+----
+POST /createPlaylist HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 44
+Host: localhost:8080
+
+{"name":"Classic","message":null,"songs":[]}
+----

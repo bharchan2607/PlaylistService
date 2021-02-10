@@ -1,0 +1,16 @@
+|===
+|Path|Type|Description
+
+|`+message+`
+|`+String+`
+|Success if playlist is created
+
+|`+name+`
+|`+String+`
+|Name of the playlist
+
+|`+songs+`
+|`+Array+`
+|Array of Songs
+
+|===

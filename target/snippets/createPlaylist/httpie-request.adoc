@@ -1,0 +1,5 @@
+[source,bash]
+----
+$ echo '{"name":"Classic","message":null,"songs":[]}' | http POST 'http://localhost:8080/createPlaylist' \
+    'Content-Type:application/json;charset=UTF-8'
+----
