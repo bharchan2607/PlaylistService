@@ -1,0 +1,4 @@
+[source,bash]
+----
+$ http DELETE 'http://localhost:8080/removeSong/Classic/Kuch%20Kuch%20Hota%20Hai'
+----

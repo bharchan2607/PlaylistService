@@ -12,11 +12,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -120,5 +120,96 @@ class PlaylistControllerTest {
 
     }
 
+    @Test
+    public void addSongsToPlaylist_PlaylistNotFound() throws Exception {
+        Playlist playlist = new Playlist();
+        String playlistName ="Classic";
+        mockMvc.perform(post("/addSong/{playlistName}",playlistName)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(new Song("Main Hoon Na"))))
+                .andExpect(status().isNotFound())
+                .andExpect(result ->  assertTrue(result.getResolvedException()
+                        instanceof PlaylistNotFoundException))
+                .andExpect(result -> assertEquals("Playlist Not Found!!",
+                        result.getResolvedException().getMessage()));
+
+    }
+
+    @Test
+    public void removeSongFromPlaylist() throws Exception {
+        Song song = new Song("Kuch Kuch Hota Hai");
+        Song song1 = new Song("Main Hoon Na");
+        Playlist playlist = new Playlist("Classic");
+
+        mockMvc.perform(post("/createPlaylist")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(playlist)))
+                .andExpect(status().isCreated());
+
+        String playlistName = "Classic";
+        mockMvc.perform(post("/addSong/{playlistName}",playlistName)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(song)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(post("/addSong/{playlistName}",playlistName)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(song1)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(delete("/removeSong/{playlistName}/{songName}",playlistName,song.getName()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(playlistName))
+                .andExpect(jsonPath("$.songs.[0].name").value("Main Hoon Na"))
+                .andExpect(jsonPath("$.songs").value(hasSize(1)))
+                .andDo(document("removeSong",
+                        pathParameters(
+                                parameterWithName("playlistName").description("Playlist Name"),
+                                parameterWithName("songName").description("Song Name to be removed")),
+                        responseFields(
+                                fieldWithPath("name").description("Playlist Name"),
+                                fieldWithPath("message").description("Success if the playlist is created"),
+                                fieldWithPath("songs").description("Songs in the Playlist"),
+                                fieldWithPath("songs.[].name").description("Name of the Song in the Playlist"))
+                ));
+    }
+
+    @Test
+    public void removeSongFromPlaylist_SongNotFound() throws Exception {
+        Song song = new Song("Kuch Kuch Hota Hai");
+        Song song1 = new Song("Main Hoon Na");
+        Playlist playlist = new Playlist("Classic");
+
+        mockMvc.perform(post("/createPlaylist")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(playlist)))
+                .andExpect(status().isCreated());
+
+        String playlistName = "Classic";
+        mockMvc.perform(post("/addSong/{playlistName}", playlistName)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(song)))
+                .andExpect(status().isOk());
+
+
+        mockMvc.perform(delete("/removeSong/{playlistName}/{songName}", playlistName, song1.getName()))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException()
+                        instanceof SongNotFoundException))
+                .andExpect(result -> assertEquals("Song Not Found in the Playlist",
+                        result.getResolvedException().getMessage()));
+    }
+
+    @Test
+    public void removeSongFromPlaylist_PlaylistNotFound() throws Exception {
+
+        mockMvc.perform(delete("/removeSong/{playlistName}/{songName}","Classic","Main Hoon Na"))
+                .andExpect(status().isNotFound())
+                .andExpect(result ->  assertTrue(result.getResolvedException()
+                        instanceof PlaylistNotFoundException))
+                .andExpect(result -> assertEquals("Playlist Not Found!!",
+                        result.getResolvedException().getMessage()));
+
+    }
 
 }

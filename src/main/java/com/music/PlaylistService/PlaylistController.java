@@ -22,4 +22,9 @@ public class PlaylistController {
     public Playlist addSongsToPlaylist(@PathVariable String playlistName, @RequestBody Song song){
         return service.addSongToPlaylist(playlistName, song);
     }
+
+    @DeleteMapping("/removeSong/{playlistName}/{songName}")
+    public Playlist addSongsFromPlaylist(@PathVariable String playlistName, @PathVariable String songName){
+        return service.removeSongFromPlaylist(playlistName, songName);
+    }
 }

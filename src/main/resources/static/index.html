@@ -605,10 +605,90 @@ Content-Length: 81
 </tbody>
 </table>
 </div>
+<div class="sect2">
+<h3 id="_remove_songs_from_playlist">Remove Songs From Playlist</h3>
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /removeSong/Classic/Kuch%20Kuch%20Hota%20Hai HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 5. /removeSong/{playlistName}/{songName}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>playlistName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Playlist Name</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>songName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Song Name to be removed</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="title">response</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 75
+
+{"name":"Classic","message":"Successful","songs":[{"name":"Main Hoon Na"}]}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 6. response-fields</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Playlist Name</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Success if the playlist is created</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>songs</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Songs in the Playlist</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>songs.[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the Song in the Playlist</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-10 14:18:56 CST
+Last updated 2021-02-10 15:04:50 CST
 </div>
 </div>
 </body>

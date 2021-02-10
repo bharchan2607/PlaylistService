@@ -1,0 +1,11 @@
+.+/removeSong/{playlistName}/{songName}+
+|===
+|Parameter|Description
+
+|`+playlistName+`
+|Playlist Name
+
+|`+songName+`
+|Song Name to be removed
+
+|===

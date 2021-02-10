@@ -41,4 +41,24 @@ public class PlaylistService {
             throw new PlaylistNotFoundException("Playlist Not Found!!");
         }
     }
+
+    public Playlist removeSongFromPlaylist(String playlistName, String songName) {
+        PlaylistEntity entity = repository.findByName(playlistName);
+        if(entity == null){
+            throw new PlaylistNotFoundException("Playlist Not Found!!");
+        }
+        SongEntity songTobeRemoved = null;
+        boolean removeSong = false;
+       for(SongEntity song: entity.getSongs()){
+           if(song.getName().equals(songName)){
+               songTobeRemoved = song;
+               removeSong = true;
+           }
+       }
+       if(removeSong) {
+           entity.getSongs().remove(songTobeRemoved);
+           return mapToPlaylist(repository.save(entity));
+       }
+       throw new SongNotFoundException("Song Not Found in the Playlist");
+    }
 }

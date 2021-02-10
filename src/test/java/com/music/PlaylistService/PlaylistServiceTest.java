@@ -75,7 +75,51 @@ public class PlaylistServiceTest {
         verify(repository,times(1)).save(entity);
         assertEquals(playlist.getSongs().size(), actualPlaylist.getSongs().size());
         assertEquals(playlist.getSongs().get(0).getName(), actualPlaylist.getSongs().get(0).getName());
+    }
 
+    @Test
+    public void addSongToPlaylist_PlaylistNotFound(){
+        when(repository.findByName("Classic")).thenReturn(null);
+        PlaylistNotFoundException exception = assertThrows(PlaylistNotFoundException.class,
+                ()-> service.addSongToPlaylist("Classic", new Song("Kuch Kuch Hota Hai")));
+        assertEquals("Playlist Not Found!!",exception.getMessage());
+        verify(repository, times(1)).findByName("Classic");
+    }
+
+    @Test
+    public void removeSongFromPlaylist(){
+        Song song = new Song("Kuch Kuch Hota Hai");
+        PlaylistEntity entity = new PlaylistEntity("Classic");
+        PlaylistEntity entity1 = new PlaylistEntity("Classic", new SongEntity("Kuch Kuch Hota Hai"));
+        Playlist playlist = new Playlist("Classic", song);
+        when(repository.findByName("Classic")).thenReturn(entity1);
+        when(repository.save(entity1)).thenReturn(entity);
+
+        Playlist actualPlaylist = service.removeSongFromPlaylist("Classic", "Kuch Kuch Hota Hai");
+        verify(repository, times(1)).findByName("Classic");
+        verify(repository,times(1)).save(entity);
+        assertEquals(0, actualPlaylist.getSongs().size());
+    }
+
+    @Test
+    public void removeSongFromPlaylist_SongNotFound(){
+        PlaylistEntity entity1 = new PlaylistEntity("Classic", new SongEntity("Kuch Kuch Hota Hai"));
+        when(repository.findByName("Classic")).thenReturn(entity1);
+        SongNotFoundException exception = assertThrows(SongNotFoundException.class,
+                ()-> service.removeSongFromPlaylist("Classic", "Main Hoon Na"));
+        assertEquals("Song Not Found in the Playlist",exception.getMessage());
+        verify(repository, times(1)).findByName("Classic");
+
+    }
+
+    @Test
+    public void removeSongFromPlaylist_PlaylistNotFound(){
+        PlaylistEntity entity1 = new PlaylistEntity("Classic", new SongEntity("Kuch Kuch Hota Hai"));
+        when(repository.findByName("Classic")).thenReturn(null);
+        PlaylistNotFoundException exception = assertThrows(PlaylistNotFoundException.class,
+                ()-> service.removeSongFromPlaylist("Classic", "Main Hoon Na"));
+        assertEquals("Playlist Not Found!!",exception.getMessage());
+        verify(repository, times(1)).findByName("Classic");
 
     }
 }

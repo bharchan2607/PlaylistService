@@ -29,3 +29,17 @@ include::{snippets}\addSong\http-response.adoc[]
 
 .response-fields
 include::{snippets}\addSong\response-fields.adoc[]
+
+=== Remove Songs From Playlist
+
+.request
+include::{snippets}\removeSong\http-request.adoc[]
+
+.path-parameters
+include::{snippets}\removeSong\path-parameters.adoc[]
+
+.response
+include::{snippets}\removeSong\http-response.adoc[]
+
+.response-fields
+include::{snippets}\removeSong\response-fields.adoc[]
