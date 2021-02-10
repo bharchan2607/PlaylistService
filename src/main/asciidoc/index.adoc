@@ -1,0 +1,17 @@
+= Playlist Service API
+
+Playlist API at http://localhost:8080:
+
+=== Create Playlist
+
+.request
+include::{snippets}\createPlaylist\http-request.adoc[]
+
+.request-fields
+include::{snippets}\createPlaylist\request-fields.adoc[]
+
+.response
+include::{snippets}\createPlaylist\http-response.adoc[]
+
+.response-fields
+include::{snippets}\createPlaylist\response-fields.adoc[]
