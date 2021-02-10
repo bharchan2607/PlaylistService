@@ -1,0 +1,8 @@
+.+/fetchAll/{playlistName}+
+|===
+|Parameter|Description
+
+|`+playlistName+`
+|Playlist Name
+
+|===

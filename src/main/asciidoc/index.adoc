@@ -43,3 +43,18 @@ include::{snippets}\removeSong\http-response.adoc[]
 
 .response-fields
 include::{snippets}\removeSong\response-fields.adoc[]
+
+=== Get All Songs From Playlist
+
+.request
+include::{snippets}\getAllSongs\http-request.adoc[]
+
+.path-parameters
+include::{snippets}\getAllSongs\path-parameters.adoc[]
+
+.response
+include::{snippets}\getAllSongs\http-response.adoc[]
+
+.response-fields
+include::{snippets}\getAllSongs\response-fields.adoc[]
+

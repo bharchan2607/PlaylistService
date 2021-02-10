@@ -27,4 +27,11 @@ public class PlaylistController {
     public Playlist addSongsFromPlaylist(@PathVariable String playlistName, @PathVariable String songName){
         return service.removeSongFromPlaylist(playlistName, songName);
     }
+
+    @GetMapping("/fetchAll/{playlistName}")
+    public Playlist fetchAllSongsFromPlaylist(@PathVariable String playlistName){
+        return service.fetchAllSongsFromPlaylist(playlistName);
+    }
+
+
 }

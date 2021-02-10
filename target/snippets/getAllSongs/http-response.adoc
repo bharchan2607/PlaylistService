@@ -1,0 +1,8 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 105
+
+{"name":"Classic","message":"Successful","songs":[{"name":"Kuch Kuch Hota Hai"},{"name":"Main Hoon Na"}]}
+----

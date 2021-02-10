@@ -61,4 +61,12 @@ public class PlaylistService {
        }
        throw new SongNotFoundException("Song Not Found in the Playlist");
     }
+
+    public Playlist fetchAllSongsFromPlaylist(String playlistName) {
+        PlaylistEntity entity = repository.findByName(playlistName);
+        if(entity == null){
+            throw new PlaylistNotFoundException("Playlist Not Found!!");
+        }
+        return mapToPlaylist(entity);
+    }
 }

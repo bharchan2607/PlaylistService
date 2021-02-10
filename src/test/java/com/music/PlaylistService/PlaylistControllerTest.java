@@ -212,4 +212,57 @@ class PlaylistControllerTest {
 
     }
 
+    @Test
+    public void getAllSongsFromPlaylist() throws Exception {
+        Song song = new Song("Kuch Kuch Hota Hai");
+        Song song1 = new Song("Main Hoon Na");
+        Playlist playlist = new Playlist("Classic");
+
+        mockMvc.perform(post("/createPlaylist")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(playlist)))
+                .andExpect(status().isCreated());
+
+        String playlistName = "Classic";
+        mockMvc.perform(post("/addSong/{playlistName}",playlistName)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(song)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(post("/addSong/{playlistName}",playlistName)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(song1)))
+                .andExpect(status().isOk());
+
+
+        mockMvc.perform(get("/fetchAll/{playlistName}","Classic"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Classic"))
+                .andExpect(jsonPath("$.songs.[0].name").value("Kuch Kuch Hota Hai"))
+                .andExpect(jsonPath("$.songs.[1].name").value("Main Hoon Na"))
+                .andExpect(jsonPath("$.songs").value(hasSize(2)))
+                .andDo(document("getAllSongs",
+                        pathParameters(
+                                parameterWithName("playlistName").description("Playlist Name")),
+                        responseFields(
+                                fieldWithPath("name").description("Playlist Name"),
+                                fieldWithPath("message").description("Success if the playlist is created"),
+                                fieldWithPath("songs").description("Songs in the Playlist"),
+                                fieldWithPath("songs.[].name").description("Name of the Song in the Playlist"))
+                ));
+
+    }
+
+    @Test
+    public void fetchAllSongsFromPlaylist_PlaylistNotFound() throws Exception {
+
+        mockMvc.perform(get("/fetchAll/{playlistName}","Classic"))
+                .andExpect(status().isNotFound())
+                .andExpect(result ->  assertTrue(result.getResolvedException()
+                        instanceof PlaylistNotFoundException))
+                .andExpect(result -> assertEquals("Playlist Not Found!!",
+                        result.getResolvedException().getMessage()));
+
+    }
+
 }
