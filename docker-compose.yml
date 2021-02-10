@@ -1,0 +1,16 @@
+version: "3"
+services:
+  playlistservicedb:
+    image: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+  playlist:
+    build: .
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+    depends_on:
+      - playlistservicedb
+    ports:
+      - "5000:8080"
