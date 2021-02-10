@@ -18,6 +18,9 @@ public class PlaylistServiceTest {
 
     @Mock
     PlaylistRepository repository;
+
+    @Mock
+    SongRepository songRepository;
     @InjectMocks
     PlaylistService service;
 
@@ -89,15 +92,17 @@ public class PlaylistServiceTest {
     @Test
     public void removeSongFromPlaylist(){
         Song song = new Song("Kuch Kuch Hota Hai");
+        SongEntity songEntity = new SongEntity("Kuch Kuch Hota Hai");
         PlaylistEntity entity = new PlaylistEntity("Classic");
         PlaylistEntity entity1 = new PlaylistEntity("Classic", new SongEntity("Kuch Kuch Hota Hai"));
         Playlist playlist = new Playlist("Classic", song);
         when(repository.findByName("Classic")).thenReturn(entity1);
         when(repository.save(entity1)).thenReturn(entity);
-
         Playlist actualPlaylist = service.removeSongFromPlaylist("Classic", "Kuch Kuch Hota Hai");
         verify(repository, times(1)).findByName("Classic");
         verify(repository,times(1)).save(entity);
+        verify(songRepository,times(1)).delete(songEntity);
+
         assertEquals(0, actualPlaylist.getSongs().size());
     }
 

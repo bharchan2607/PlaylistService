@@ -9,9 +9,11 @@ import java.util.stream.Collectors;
 public class PlaylistService {
 
     PlaylistRepository repository;
+    SongRepository songRepository;
 
-    public PlaylistService(PlaylistRepository repository){
+    public PlaylistService(PlaylistRepository repository, SongRepository songRepository){
         this.repository = repository;
+        this.songRepository = songRepository;
     }
 
     public Playlist createPlaylist(Playlist playlist) {
@@ -57,6 +59,7 @@ public class PlaylistService {
        }
        if(removeSong) {
            entity.getSongs().remove(songTobeRemoved);
+           songRepository.delete(songTobeRemoved);
            return mapToPlaylist(repository.save(entity));
        }
        throw new SongNotFoundException("Song Not Found in the Playlist");
