@@ -108,7 +108,7 @@ class PlaylistControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(playlistName))
                 .andExpect(jsonPath("$.songs.[0].name").value("Kuch Kuch Hota Hai"))
-                .andDo(document("Add Song",
+                .andDo(document("addSong",
                         pathParameters(
                                 parameterWithName("playlistName").description("Playlist Name")),
                         responseFields(

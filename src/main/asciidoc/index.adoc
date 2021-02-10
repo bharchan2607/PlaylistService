@@ -15,3 +15,17 @@ include::{snippets}\createPlaylist\http-response.adoc[]
 
 .response-fields
 include::{snippets}\createPlaylist\response-fields.adoc[]
+
+=== Add Songs to Playlist
+
+.request
+include::{snippets}\addSong\http-request.adoc[]
+
+.path-parameters
+include::{snippets}\addSong\path-parameters.adoc[]
+
+.response
+include::{snippets}\addSong\http-response.adoc[]
+
+.response-fields
+include::{snippets}\addSong\response-fields.adoc[]
